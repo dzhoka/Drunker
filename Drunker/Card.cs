@@ -3,8 +3,8 @@ namespace Drunker
 {
     public class Card
     {
-        private string suit;
-        public int rank;
+        string suit;
+        int rank;
 
         public Card(string suit, int rank)
         {
