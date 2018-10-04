@@ -8,12 +8,13 @@ namespace Drunker
     public class User : Player
     {
         List<Card> hand = new List<Card>();
-
         string name;
+        IConsole console;
 
-        public User(string name)
+        public User(string name, IConsole console)
         {
             this.name = name;
+            this.console = console;
         }
 
         public string GetName()
@@ -25,13 +26,13 @@ namespace Drunker
         {
             while (true)
             {
-                Console.Write("Put your card: ");
-                string input = Console.ReadLine();
+                console.Write("Put your card: ");
+                string input = console.ReadLine();
                 if (input == "")
                 {
                     if (stack.Count == 0) return actionCard;
                     Card card = Game.MoveCard(stack, hand);
-                    Console.WriteLine("Your card: {0}", card.Image());
+                    console.WriteLine("Your card: " + card.Image());
                     continue;
                 }
 
@@ -42,7 +43,7 @@ namespace Drunker
 
                 if (!playedCard.Match(actionCard))
                 {
-                    Console.WriteLine("Card doesn't match");
+                    console.WriteLine("Card doesn't match");
                     continue;
                 }
 

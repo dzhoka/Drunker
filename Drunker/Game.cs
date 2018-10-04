@@ -9,11 +9,13 @@ namespace Drunker
         List<Card> stack;
         User user;
         List<Player> players;
+        IConsole console;
 
-        public Game(string userName, int numberOfDrunkers)
+        public Game(List<Card> stack, string userName, int numberOfDrunkers, IConsole console)
         {
-            stack = NewStack();
-            user = new User(userName);
+            this.console = console;
+            this.stack = stack;
+            user = new User(userName, console);
             players = new List<Player>();
             players.Add(user);
             for (int i = 0; i < numberOfDrunkers; i++)
@@ -22,30 +24,27 @@ namespace Drunker
             }
         }
 
+        public List<Player> GetPlayers()
+        {
+            return players;
+        }
+
         public void Play()
         {
-            foreach (var player in players)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    MoveCard(stack, player.GetCards());
-                }
-            }
-
             Card actionCard = TakeCardFromTop(stack);
 
             while (stack.Any() && HasEveryoneCards())
             {
-                Console.Clear();
-                Console.WriteLine($"Current card: {actionCard.Image()}");
+                console.Clear();
+                console.WriteLine($"Current card: {actionCard.Image()}");
                 PrintUserCards();
 
-                Console.WriteLine("");
+                console.WriteLine("");
                 foreach (var player in players)
                 {
-                    Console.WriteLine($"{player.GetName()}: {player.GetCards().Count} in hand");
+                    console.WriteLine($"{player.GetName()}: {player.GetCards().Count} in hand");
                 }
-                Console.WriteLine("");
+                console.WriteLine("");
 
                 foreach (var player in players)
                 {
@@ -58,13 +57,23 @@ namespace Drunker
                 List<Card> cards = player.GetCards();
                 if (cards.Count == 0)
                 {
-                    Console.WriteLine(player.GetName() + " wins!");
+                    console.WriteLine(player.GetName() + " wins!");
                     return;
                 }
             }
-            Console.WriteLine("No one wins!");
+            console.WriteLine("No one wins!");
         }
 
+        public void DealCardsEach(int numberOfCards)
+        {
+            foreach (var player in players)
+            {
+                for (int i = 0; i < numberOfCards; i++)
+                {
+                    MoveCard(stack, player.GetCards());
+                }
+            }
+        }
 
         bool HasEveryoneCards()
         {
@@ -77,18 +86,18 @@ namespace Drunker
 
         void PrintUserCards()
         {
-            Console.Write("Your cards:");
+            console.Write("Your cards:");
             foreach (var card in user.GetCards())
-                Console.Write(" " + card.Image());
-            Console.WriteLine("");
+                console.Write(" " + card.Image());
+            console.WriteLine("");
         }
 
-        List<Card> NewStack()
+        public static List<Card> NewStack(int minRank, int maxRank)
         {
             List<Card> cards = new List<Card>();
             string[] suits = { "H", "T", "P", "C" };
 
-            for (int r = 2; r <= 10; r++)
+            for (int r = minRank; r <= maxRank; r++)
             {
                 foreach (string s in suits)
                 {

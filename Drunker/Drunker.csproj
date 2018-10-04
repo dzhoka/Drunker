@@ -43,6 +43,12 @@
     <Compile Include="User.cs" />
     <Compile Include="Computer.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="CardTests.cs" />
+    <Compile Include="ComputerTests.cs" />
+    <Compile Include="IConsole.cs" />
+    <Compile Include="GameConsole.cs" />
+    <Compile Include="UserTests.cs" />
+    <Compile Include="GameTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -23,7 +23,7 @@ namespace Drunker
 
         public Card Turn(List<Card> stack, Card actionCard)
         {
-            int index = findBestCardToPlay(actionCard);
+            int index = FindBestCardToPlay(actionCard);
             if (index != -1) 
             {
                 actionCard = hand[index];
@@ -45,7 +45,7 @@ namespace Drunker
             return hand;
         }
 
-        int findBestCardToPlay(Card actionCard)
+        public int FindBestCardToPlay(Card actionCard)
         {
             List<int> candidates = new List<int>();
             List<int> matches = new List<int>();
